@@ -57,7 +57,7 @@ app.get("/api/hello", function (req, res) {
 });
 
 // Timestamp Project
-app.get("/api/timestamp", function(req, res) {
+app.get("/api/:date?", function(req, res) {
   var now = new Date()
   res.json({
     "unix": now.getTime(),
@@ -65,7 +65,7 @@ app.get("/api/timestamp", function(req, res) {
   });
 });
 
-app.get("/api/timestamp/:date_string", function(req, res) {
+app.get("/api/:date?/:date_string", function(req, res) {
   let dateString = req.params.date_string;
 
   if (parseInt(dateString) > 10000) {
