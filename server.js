@@ -1,7 +1,5 @@
- var database_uri = 'mongodb+srv://joao:dexisdeath365@cluster0.d0cor.mongodb.net/fccapimicroservicescertification?retryWrites=true&w=majority'
-
+var database_uri = 'mongodb+srv://joao:dexisdeath365@cluster0.d0cor.mongodb.net/fccapimicroservicescertification?retryWrites=true&w=majority'
 // init project
-require("dotenv").config();
 var express = require('express');
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
@@ -11,12 +9,9 @@ var dns = require('dns');
 require('dotenv').config()
 
 var app = express();
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 3000;
 
-//  mongoose.connect(database_uri);
-
-
- mongoose.connect(database_uri, {
+mongoose.connect(database_uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -42,8 +37,8 @@ app.get("/requestHeaderParser", function (req, res) {
   res.sendFile(__dirname + '/views/requestHeaderParser.html');
 });
 
-app.get("/urlShrinkerMicroservice", function (req, res) {
-  res.sendFile(__dirname + '/views/urlShrinkerMicroservice.html');
+app.get("/urlShortenerMicroservice", function (req, res) {
+  res.sendFile(__dirname + '/views/urlShortenerMicroservice.html');
 });
 
 app.get("/exercise-tracker", function (req, res) {
@@ -52,12 +47,12 @@ app.get("/exercise-tracker", function (req, res) {
 
 // your first API endpoint...
 app.get("/api/hello", function (req, res) {
-  // console.log({greeting: 'hello API'});
+  console.log({greeting: 'hello API'});
   res.json({greeting: 'hello API'});
 });
 
 // Timestamp Project
-app.get("/api/:date?", function(req, res) {
+app.get("/api/timestamp", function(req, res) {
   var now = new Date()
   res.json({
     "unix": now.getTime(),
@@ -65,7 +60,7 @@ app.get("/api/:date?", function(req, res) {
   });
 });
 
-app.get("/api/:date?/:date_string", function(req, res) {
+app.get("/api/timestamp/:date_string", function(req, res) {
   let dateString = req.params.date_string;
 
   if (parseInt(dateString) > 10000) {
@@ -177,5 +172,3 @@ app.get("/api/exercise/users", (req, res) => {
 var listener = app.listen(port, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
-
-
