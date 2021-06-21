@@ -52,36 +52,61 @@ app.get("/api/hello", function (req, res) {
 });
 
 // Timestamp Project
-app.get("/api/timestamp", function(req, res) {
-  var now = new Date()
-  res.json({
-    "unix": now.getTime(),
-    "utc": now.toUTCString()
-  });
-});
 
-app.get("/api/timestamp/:date_string", function(req, res) {
-  let dateString = req.params.date_string;
+app.get("/api/timestamp/:timestamp", (req, res) => {
+  let timestamp = req.params.timestamp;
 
-  if (parseInt(dateString) > 10000) {
-    let unixTime = new Date(parseInt(dateString));
+  if (timestamp.match(/\d{5,}/)) {
+    timestamp = +timestamp;
+    }
+    let date = new Date(timestamp);
+    if (date.toUTCString() == "Invalid Date"){
+      res.json({error: date.toUTCString()})
+    }
     res.json({
-      "unix": unixTime.getTime(),
-      "utc": unixTime.toUTCString()
+      "unix": date.valueOf(),
+      "utc": date.toUTCString()
     });
-  }
+    });
 
-  let passedInValue = new Date(dateString);
-
-  if (passedInValue == "Invalid Date") {
-    res.json({"error" : "Invalid Date" });
-  } else {
+  app.get ("/api/timestamp/", (req, res) => {
+    let date = new Date();
     res.json({
-      "unix": passedInValue.getTime(),
-      "utc": passedInValue.toUTCString()
-    })
-  }
-});
+      "unix": date.valueOf(),
+      "utc": date.toUTCString()
+    });
+  });
+
+// app.get("/api/timestamp", function(req, res) {
+//   var now = new Date()
+//   res.json({
+//     "unix": now.getTime(),
+//     "utc": now.toUTCString()
+//   });
+// });
+
+// app.get("/api/timestamp/:date_string", function(req, res) {
+//   let dateString = req.params.date_string;
+
+//   if (parseInt(dateString) > 10000) {
+//     let unixTime = new Date(parseInt(dateString));
+//     res.json({
+//       "unix": unixTime.getTime(),
+//       "utc": unixTime.toUTCString()
+//     });
+//   }
+
+//   let passedInValue = new Date(dateString);
+
+//   if (passedInValue == "Invalid Date") {
+//     res.json({"error" : "Invalid Date" });
+//   } else {
+//     res.json({
+//       "unix": passedInValue.getTime(),
+//       "utc": passedInValue.toUTCString()
+//     })
+//   }
+// });
 
 // Header Request
 app.get("/api/whoami", function(req, res) {
